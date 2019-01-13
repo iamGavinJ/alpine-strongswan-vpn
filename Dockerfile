@@ -2,7 +2,7 @@
 # StrongSwan VPN + Alpine Linux
 #
 
-FROM alpine:edge
+FROM alpine
 
 ENV STRONGSWAN_RELEASE https://download.strongswan.org/strongswan.tar.bz2
 
@@ -24,34 +24,33 @@ RUN apk --update add build-base \
             --libexecdir=/usr/lib \
             --with-ipsecdir=/usr/lib/strongswan \
             --enable-aesni \
+            --disable-aes \
             --enable-chapoly \
-            --enable-cmd \
             --enable-curl \
+            --enable-files \
+            --enable-gcm \
+            --enable-openssl \
+            --enable-cmd \
             --enable-dhcp \
             --enable-eap-dynamic \
             --enable-eap-identity \
             --enable-eap-md5 \
-            --enable-eap-mschapv2 \
+            --enable-eap-peap \
             --enable-eap-radius \
             --enable-eap-tls \
+            --enable-eap-ttls \
             --enable-farp \
-            --enable-files \
-            --enable-gcm \
-            --enable-md4 \
+            --enable-radattr \
+            --enable-xauth-eap \
             --enable-newhope \
             --enable-ntru \
-            --enable-openssl \
             --enable-sha3 \
             --enable-shared \
-            --disable-aes \
-            --disable-des \
-            --disable-gmp \
-            --disable-hmac \
             --disable-ikev1 \
-            --disable-md5 \
+            --disable-gmp \
+            --disable-des \
             --disable-rc2 \
             --disable-sha1 \
-            --disable-sha2 \
             --disable-static && \
     make && \
     make install && \

@@ -6,7 +6,7 @@ FROM alpine
 
 ENV STRONGSWAN_RELEASE https://download.strongswan.org/strongswan.tar.bz2
 
-RUN apk --update add build-base \
+RUN apk --update --no-cache add build-base \
             ca-certificates \
             curl \
             curl-dev \
@@ -53,7 +53,7 @@ RUN apk --update add build-base \
             --disable-sha1 \
             --disable-static && \
     make && \
-    make install && \
+    make install clean && \
     rm -rf /tmp/* && \
     apk del build-base curl-dev openssl-dev && \
     rm -rf /var/cache/apk/*

@@ -6,7 +6,10 @@ FROM alpine:edge
 
 ENV STRONGSWAN_RELEASE https://download.strongswan.org/strongswan.tar.bz2
 
-RUN apk --update --no-cache add build-base \
+RUN apk update && \
+    apk upgrade && \
+    apk --update --no-cache add \
+            build-base \
             ca-certificates \
             curl \
             curl-dev \
@@ -20,9 +23,8 @@ RUN apk --update --no-cache add build-base \
     tar --strip-components=1 -C /tmp/strongswan -xjf /tmp/strongswan.tar.bz2 && \
     cd /tmp/strongswan && \
     ./configure --prefix=/usr \
-            --sysconfdir=/etc \
-            --libexecdir=/usr/lib \
-            --with-ipsecdir=/usr/lib/strongswan \
+            --sysconfdir=/etc/strongswan \
+            --with-resolv-conf=/etc/resolv.conf \
             --enable-aesni \
             --disable-aes \
             --enable-chapoly \

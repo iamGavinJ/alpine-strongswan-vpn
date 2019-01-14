@@ -66,7 +66,8 @@ RUN apk update && \
     apk del build-base curl-dev openssl-dev && \
     rm -rf /var/cache/apk/*
 
-EXPOSE ["500/udp", "4500/udp"]
+EXPOSE 500/udp \
+       4500/udp
 
 ENTRYPOINT ["/usr/sbin/ipsec"]
 CMD ["start", "--nofork"]

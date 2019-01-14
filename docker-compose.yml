@@ -1,0 +1,22 @@
+version: '3.7'
+### Minimum v3.7 required for 'init: true'
+
+services:
+  strongswan:
+    image: iamgavinj/strongswan:latest
+    container_name: strongswan
+    init: true
+    restart: always
+
+    network_mode: host
+    cap_add:
+    - NET_ADMIN
+    
+    volumes:
+      - /docker/strongswan/etc:/etc/strongswan
+      - /docker/strongswan/log:/var/log/strongswan
+      - /docker/strongswan/run:/var/run/strongswan
+
+    ports:
+      - "500:500/udp"
+      - "4500:4500/udp"

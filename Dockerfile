@@ -1,6 +1,7 @@
 #
 # StrongSwan VPN + Alpine Linux
 #
+# Build with: docker build -t iamgavinj/strongswan:latest -t iamgavinj/strongswan:5.7.2 .
 
 FROM alpine:edge
 
@@ -18,12 +19,17 @@ RUN apk update && \
             iptables-dev \
             openssl \
             openssl-dev && \
+    mkdir -p /lib/modules && \
+    mkdir -p /var/run/strongswan && \
+    chmod -R 777 /var/run/strongswan && \
     mkdir -p /tmp/strongswan && \
     curl -Lo /tmp/strongswan.tar.bz2 $STRONGSWAN_RELEASE && \
     tar --strip-components=1 -C /tmp/strongswan -xjf /tmp/strongswan.tar.bz2 && \
     cd /tmp/strongswan && \
     ./configure --prefix=/usr \
             --sysconfdir=/etc/strongswan \
+            --localstatedir=/var \
+            --runstatedir=/var/run/strongswan \
             --with-resolv-conf=/etc/resolv.conf \
             --enable-aesni \
             --disable-aes \
@@ -60,8 +66,7 @@ RUN apk update && \
     apk del build-base curl-dev openssl-dev && \
     rm -rf /var/cache/apk/*
 
-EXPOSE 500/udp \
-       4500/udp
+EXPOSE [500/udp, 4500/udp]
 
 ENTRYPOINT ["/usr/sbin/ipsec"]
 CMD ["start", "--nofork"]
